@@ -8,7 +8,7 @@
   </a>
 </p>
 
-> CosmosHTTP is a HTTP client made in C# for the Cosmos operating system construction kit.
+> CosmosHTTP is a HTTP client made in C# for the Cosmos operating system construction kit. GET and PUT are currently supported.
 
 ### Todo
 - Implement HTTPS
