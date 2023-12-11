@@ -1,7 +1,7 @@
 ﻿<h1 align="center">CosmosHTTP Client [WIP]</h1>
 <p>
-  <a href="https://www.nuget.org/packages/CosmosHttpClient/" target="_blank">
-    <img alt="Version" src="https://img.shields.io/nuget/v/CosmosHttpClient.svg" />
+  <a href="https://www.nuget.org/packages/CosmosHttp/" target="_blank">
+    <img alt="Version" src="https://img.shields.io/nuget/v/CosmosHttp.svg" />
   </a>
   <a href="https://github.com/CosmosOS/CosmosHttp/blob/main/LICENSE.txt" target="_blank">
     <img alt="License: BSD Clause 3 License" src="https://img.shields.io/badge/license-BSD License-yellow.svg" />
