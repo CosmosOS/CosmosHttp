@@ -6,7 +6,7 @@
     <Authors>Cosmos</Authors>
     <Company>Cosmos</Company>
     <Description>HTTP Client for CosmosOS.</Description>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -24,9 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cosmos.System2" Version="0.1.0-localbuild*">
-        <NoWarn>NU1605;NU1604;NU1103</NoWarn>
-    </PackageReference>
+	  <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604" />
   </ItemGroup>
 
   <ItemGroup>
