@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>Cosmos</Authors>
+    <Company>Cosmos</Company>
+    <Description>HTTP Client for CosmosOS.</Description>
+    <Version>1.0.1</Version>
+  </PropertyGroup>
+
+  <PropertyGroup>
+	  <Title>CosmosHttpClient</Title>
+	  <PackageIcon>icon.png</PackageIcon>
+      <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+      <PackageProjectUrl>https://github.com/CosmosOS/CosmosHttp</PackageProjectUrl>
+      <RepositoryUrl>https://github.com/CosmosOS/CosmosHttp</RepositoryUrl>
+      <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+      <None Include="LICENSE.txt" Pack="true" PackagePath="LICENSE.txt" />
+	  <None Include="resources/icon.png" Pack="true" PackagePath="icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Cosmos.System2" Version="0.1.0-localbuild*">
+        <NoWarn>NU1605;NU1604;NU1103</NoWarn>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="resources\icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
