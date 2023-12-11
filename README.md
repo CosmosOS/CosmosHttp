@@ -18,7 +18,27 @@
 
 ## Usage
 
+Install the Nuget Package from [Nuget](https://www.nuget.org/packages/CosmosHttp/):
+
+```PM
+Install-Package CosmosHttp -Version 1.0.2
+```
+
+```PM
+dotnet add PROJECT package CosmosHttp --version 1.0.2
+```
+
+Or add these lines to your Cosmos kernel .csproj:
+
+```
+<ItemGroup>
+    <PackageReference Include="CosmosHttp" Version="1.0.2" />
+</ItemGroup>
+```
+
 ```CS
+using CosmosHttp.Client;
+
 HttpRequest request = new();
 request.IP = "34.223.124.45";
 request.Path = "/";
@@ -27,7 +47,7 @@ request.Send();
 Console.WriteLine(request.Response.Content);
 ```
 
-You can find more information about the HTTP client and how to connect to a remote server in the [Cosmos Documentation](https://cosmosos.github.io/articles/Kernel/Network.html#http).
+Here is a basic wget command implementation using CosmosHttp: [github.com/aura-systems/Aura-Operating-System](https://github.com/aura-systems/Aura-Operating-System/blob/master/SRC/Aura_OS/System/Interpreter/Commands/Network/Wget.cs#L63).
 
 ## Authors
 
