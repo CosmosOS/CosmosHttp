@@ -1,4 +1,4 @@
-﻿<h1 align="center">CosmosHTTP Client 🚀</h1>
+﻿<h1 align="center">CosmosHTTP Client [WIP]</h1>
 <p>
   <a href="https://www.nuget.org/packages/CosmosHttpClient/" target="_blank">
     <img alt="Version" src="https://img.shields.io/nuget/v/CosmosHttpClient.svg" />
