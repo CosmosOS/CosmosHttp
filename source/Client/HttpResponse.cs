@@ -1,24 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mime;
+﻿/*
+* PROJECT:          CosmosHttp Development
+* CONTENT:          Http Response class (Heavily inspered by https://github.com/2881099/TcpClientHttpRequest)
+* PROGRAMMERS:      Valentin Charbonnier <valentinbreiz@gmail.com>
+*/
+
+using System;
 using System.Net;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Collections.Specialized;
-using System.IO;
 
 namespace CosmosHttp.Client
 {
-    public class HttpResponse
+    public class HttpResponse : HttpPaquet
     {
-        private string _action;
-        private string _method;
-        private string _charset;
-        private string _head;
-        private Dictionary<string, string> _headers = new Dictionary<string, string>();
         private int _received = 0;
         private HttpStatusCode _statusCode;
         private int _contentLength = -1;
@@ -45,11 +38,6 @@ namespace CosmosHttp.Client
             get { return _contentLength; }
         }
 
-        public Dictionary<string, string> Headers
-        {
-            get { return _headers; }
-        }
-
         public string Content
         {
             get
@@ -64,9 +52,7 @@ namespace CosmosHttp.Client
 
         public HttpResponse(HttpRequest ie, byte[] headBytes)
         {
-            Cosmos.HAL.Global.debugger.Send("HttpResponse ctor.");
-
-            _action = ie.IP;
+            _ip = ie.IP;
             _method = ie.Method;
             _charset = ie.Charset;
             string head = Encoding.ASCII.GetString(headBytes);
@@ -87,8 +73,6 @@ namespace CosmosHttp.Client
             {
                 head = head.Substring(idx + 2);
             }
-
-            Cosmos.HAL.Global.debugger.Send("HttpResponse head created.");
 
             string[] heads = head.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string h in heads)
@@ -119,8 +103,8 @@ namespace CosmosHttp.Client
                                         _charset = charset;
                                     }
                                     catch (Exception ex)
-                                    {
-                                        // Consider logging the exception
+                                    { 
+                                        Cosmos.HAL.Global.debugger.Send("Ex: " + ex.ToString());
                                     }
                                 }
                             }
@@ -146,9 +130,6 @@ namespace CosmosHttp.Client
                     }
                 }
             }
-
-
-            Cosmos.HAL.Global.debugger.Send("HttpResponse head parsed.");
         }
 
         public void SetStream(byte[] bodyBytes)

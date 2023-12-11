@@ -1,56 +1,26 @@
-﻿using System;
+﻿/*
+* PROJECT:          CosmosHttp Development
+* CONTENT:          Http Request class (Heavily inspered by https://github.com/2881099/TcpClientHttpRequest)
+* PROGRAMMERS:      Valentin Charbonnier <valentinbreiz@gmail.com>
+*/
+
+using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Reflection.PortableExecutable;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace CosmosHttp.Client
 {
-    public class HttpRequest : IDisposable
+    public class HttpRequest : HttpPaquet
     {
         private TcpClient _client;
-        private string _method = "GET";
         private string _remote;
-        private string _ip;
         private string _path;
-        private string _data;
-        private string _head;
-        private string _charset = "us-ascii";
         private int _timeout = 20000;
         private NetworkStream _stream;
-        private Dictionary<string, string> _headers = new Dictionary<string, string>();
         private HttpResponse _response;
-
-        public string Method
-        {
-            get
-            {
-                return _method;
-            }
-            set
-            {
-                _method = value.ToUpper();
-            }
-        }
-
-        public string IP
-        {
-            get
-            {
-                return _ip;
-            }
-            set
-            {
-                _ip = value;
-            }
-        }
 
         public string Path
         {
@@ -61,18 +31,6 @@ namespace CosmosHttp.Client
             set
             {
                 _path = value;
-            }
-        }
-
-        public string Charset
-        {
-            get
-            {
-                return _charset;
-            }
-            set
-            {
-                _charset = value;
             }
         }
 
@@ -115,10 +73,7 @@ namespace CosmosHttp.Client
 
         private void Send(string data, int redirections)
         {
-            Cosmos.HAL.Global.debugger.Send("HttpRequest Send.");
-
             _data = data;
-            Cosmos.HAL.Global.debugger.Send("HttpRequest Send - creating _headers.");
 
             _headers.Remove("Content-Length");
             if (!string.IsNullOrEmpty(data) && string.Compare(_method, "post", true) == 0)
@@ -143,15 +98,11 @@ namespace CosmosHttp.Client
             }
             _headers["Host"] = _ip;
 
-            Cosmos.HAL.Global.debugger.Send("HttpRequest Send - _headers created.");
-
             string http = _method + " " + _path + " HTTP/1.1\r\n";
             foreach (string head in _headers.Keys)
             {
                 http += head + ": " + _headers[head] + "\r\n";
             }
-
-            Cosmos.HAL.Global.debugger.Send("HttpRequest Send - http created.");
 
             http += "\r\n" + data;
             _head = http;
@@ -179,8 +130,6 @@ namespace CosmosHttp.Client
 
         protected void receive(Stream stream, int redirections, string action)
         {
-            Cosmos.HAL.Global.debugger.Send("HttpRequest receive.");
-
             // stream.ReadTimeout = _timeout; TO PLUG
             _response = null;
             byte[] bytes = new byte[1024];
@@ -212,8 +161,6 @@ namespace CosmosHttp.Client
 
                 if (_response == null)
                 {
-                    Cosmos.HAL.Global.debugger.Send("HttpRequest receive _response==null.");
-
                     // Add the newly read bytes to the head buffer
                     int oldLength = headBuffer != null ? headBuffer.Length : 0;
                     byte[] newHeadBuffer = new byte[oldLength + bytesRead];
@@ -242,8 +189,6 @@ namespace CosmosHttp.Client
                 }
                 else
                 {
-                    Cosmos.HAL.Global.debugger.Send("HttpRequest receive _response!=null.");
-
                     _response.Received += bytesRead;
                     // Add the newly read bytes to the body buffer
                     int oldLength = bodyBuffer != null ? bodyBuffer.Length : 0;
@@ -267,8 +212,6 @@ namespace CosmosHttp.Client
                     }
                 }
             }
-
-            Cosmos.HAL.Global.debugger.Send("HttpRequest receive continue.");
 
             if (_response == null)
             {
@@ -296,8 +239,6 @@ namespace CosmosHttp.Client
             _response.SetStream(bodyBuffer);
 
             this.closeTcp();
-
-            Cosmos.HAL.Global.debugger.Send("HttpRequest receive done.");
         }
 
         protected bool closeTcp()
@@ -309,11 +250,6 @@ namespace CosmosHttp.Client
         protected NetworkStream getStream()
         {
             return _client.GetStream();
-        }
-
-        public void Dispose()
-        {
-            Cosmos.HAL.Global.debugger.Send("HttpRequest Dispose.");
         }
     }
 
