@@ -12,7 +12,7 @@ using System.IO;
 
 namespace CosmosHttp.Client
 {
-    internal class HttpResponse
+    public class HttpResponse
     {
         private string _action;
         private string _method;
@@ -24,6 +24,7 @@ namespace CosmosHttp.Client
         private int _contentLength = -1;
         private string _contentType;
         private string _server;
+        private string _content;
         private string _contentEncoding = string.Empty;
         private byte[] _stream = new byte[] { };
 
@@ -49,11 +50,23 @@ namespace CosmosHttp.Client
             get { return _headers; }
         }
 
+        public string Content
+        {
+            get
+            {
+                if (_content == null)
+                {
+                    _content = Encoding.ASCII.GetString(_stream);
+                }
+                return _content;
+            }
+        }
+
         public HttpResponse(HttpRequest ie, byte[] headBytes)
         {
             Cosmos.HAL.Global.debugger.Send("HttpResponse ctor.");
 
-            _action = ie.Action;
+            _action = ie.IP;
             _method = ie.Method;
             _charset = ie.Charset;
             string head = Encoding.ASCII.GetString(headBytes);
@@ -77,7 +90,7 @@ namespace CosmosHttp.Client
 
             Cosmos.HAL.Global.debugger.Send("HttpResponse head created.");
 
-            string[] heads = head.Split(new string[] { "\r\n" }, StringSplitOptions.None);
+            string[] heads = head.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string h in heads)
             {
                 string[] nv = h.Split(new char[] { ':' }, 2);
@@ -85,33 +98,32 @@ namespace CosmosHttp.Client
                 {
                     string n = nv[0].Trim();
                     string v = nv[1].Trim();
-                    if (v.EndsWith("; Secure")) v = v.Replace("; Secure", "");
-                    if (v.EndsWith("; version=1")) v = v.Replace("; version=1", "");
+
+                    // Handle specific headers and their unique cases
                     switch (n.ToLower())
                     {
                         case "content-length":
                             if (!int.TryParse(v, out _contentLength)) _contentLength = -1;
                             break;
                         case "content-type":
-                            idx = v.IndexOf("charset=", StringComparison.CurrentCultureIgnoreCase);
+                            _contentType = v;
+                            idx = v.IndexOf("charset=", StringComparison.OrdinalIgnoreCase);
                             if (idx != -1)
                             {
-                                string charset = v.Substring(idx + 8);
-                                idx = charset.IndexOf(";");
-                                if (idx != -1) charset = charset.Remove(idx);
-                                if (string.Compare(_charset, charset, true) != 0)
+                                string charset = v.Substring(idx + 8).Split(';')[0].Trim();
+                                if (string.Compare(_charset, charset, StringComparison.OrdinalIgnoreCase) != 0)
                                 {
                                     try
                                     {
                                         Encoding testEncode = Encoding.GetEncoding(charset);
                                         _charset = charset;
                                     }
-                                    catch
+                                    catch (Exception ex)
                                     {
+                                        // Consider logging the exception
                                     }
                                 }
                             }
-                            _contentType = v;
                             break;
                         case "server":
                             _server = v;
@@ -119,23 +131,30 @@ namespace CosmosHttp.Client
                         case "content-encoding":
                             _contentEncoding = v;
                             break;
+                        // Add more specific headers as needed
                         default:
-                            _headers.Add(n, v);
+                            if (_headers.ContainsKey(n))
+                            {
+                                // Append or replace based on your requirement
+                                _headers[n] = v;
+                            }
+                            else
+                            {
+                                _headers.Add(n, v);
+                            }
                             break;
                     }
                 }
             }
+
 
             Cosmos.HAL.Global.debugger.Send("HttpResponse head parsed.");
         }
 
         public void SetStream(byte[] bodyBytes)
         {
-            Cosmos.HAL.Global.debugger.Send("HttpResponse SetStream 1.1");
             _stream = bodyBytes;
-            Cosmos.HAL.Global.debugger.Send("HttpResponse SetStream 1.2");
             _contentLength = bodyBytes.Length;
-            Cosmos.HAL.Global.debugger.Send("HttpResponse SetStream 1.3");
         }
     }
 }

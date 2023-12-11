@@ -18,7 +18,8 @@ namespace CosmosHttp.Client
         private TcpClient _client;
         private string _method = "GET";
         private string _remote;
-        private string _action;
+        private string _ip;
+        private string _path;
         private string _data;
         private string _head;
         private string _charset = "us-ascii";
@@ -39,17 +40,30 @@ namespace CosmosHttp.Client
             }
         }
 
-        public string Action
+        public string IP
         {
             get
             {
-                return _action;
+                return _ip;
             }
             set
             {
-                _action = value;
+                _ip = value;
             }
         }
+
+        public string Path
+        {
+            get
+            {
+                return _path;
+            }
+            set
+            {
+                _path = value;
+            }
+        }
+
         public string Charset
         {
             get
@@ -60,6 +74,11 @@ namespace CosmosHttp.Client
             {
                 _charset = value;
             }
+        }
+
+        public HttpResponse Response
+        {
+            get { return _response; }
         }
 
         public HttpRequest()
@@ -73,19 +92,13 @@ namespace CosmosHttp.Client
 
         public void Close()
         {
-            Cosmos.HAL.Global.debugger.Send("HttpRequest Close.");
             if (_client != null)
             {
-                Cosmos.HAL.Global.debugger.Send("HttpRequest Close 1.1");
                 if (_stream != null)
                 {
-                    Cosmos.HAL.Global.debugger.Send("HttpRequest Close 1.2");
                     _stream.Close();
-                    Cosmos.HAL.Global.debugger.Send("HttpRequest Close 2.");
                 }
-                Cosmos.HAL.Global.debugger.Send("HttpRequest Close 3.");
                 _client.Close();
-                Cosmos.HAL.Global.debugger.Send("HttpRequest Close 4.");
                 _client = null;
             }
         }
@@ -128,11 +141,11 @@ namespace CosmosHttp.Client
                 }
                 data += "\r\n\r\n";
             }
-            _headers["Host"] = _action;
+            _headers["Host"] = _ip;
 
             Cosmos.HAL.Global.debugger.Send("HttpRequest Send - _headers created.");
 
-            string http = _method + " " + _action + " HTTP/1.1\r\n";
+            string http = _method + " " + _path + " HTTP/1.1\r\n";
             foreach (string head in _headers.Keys)
             {
                 http += head + ": " + _headers[head] + "\r\n";
@@ -145,9 +158,9 @@ namespace CosmosHttp.Client
             byte[] request = Encoding.ASCII.GetBytes(http);
             if (_client == null || _remote == null)
             {
-                _remote = _action;
+                _remote = _ip;
                 this.Close();
-                _client = new TcpClient(_action, 80);
+                _client = new TcpClient(_ip, 80);
             }
             try
             {
@@ -157,11 +170,11 @@ namespace CosmosHttp.Client
             catch
             {
                 this.Close();
-                _client = new TcpClient(_action, 80);
+                _client = new TcpClient(_ip, 80);
                 _stream = getStream();
                 _stream.Write(request, 0, request.Length);
             }
-            receive(_stream, redirections, _action);
+            receive(_stream, redirections, _ip);
         }
 
         protected void receive(Stream stream, int redirections, string action)
@@ -225,10 +238,6 @@ namespace CosmosHttp.Client
                         int bodyLength = headBuffer.Length - idx - 4;
                         bodyBuffer = new byte[bodyLength];
                         Array.Copy(headBuffer, idx + 4, bodyBuffer, 0, bodyLength);
-
-                        Cosmos.HAL.Global.debugger.Send("HttpRequest receive _response==null bodyLength=" + bodyLength);
-                        Cosmos.HAL.Global.debugger.Send("HttpRequest receive _response==null headBuffer=" + headBuffer.Length);
-                        
                     }
                 }
                 else
@@ -267,7 +276,7 @@ namespace CosmosHttp.Client
 
                 // Construct the request headers string
                 List<string> sb = new List<string>();
-                sb.Add(_method.ToUpper() + " " + _action + " HTTP/1.1");
+                sb.Add(_method.ToUpper() + " " + _ip + " HTTP/1.1");
                 foreach (string header in _headers.Keys)
                 {
                     sb.Add(header + ": " + _headers[header]);
@@ -284,25 +293,9 @@ namespace CosmosHttp.Client
                 }
             }
 
-            Cosmos.HAL.Global.debugger.Send("HttpRequest receive set stream.");
-
-            if (_response.ContentLength >= 0)
-            {
-                Cosmos.HAL.Global.debugger.Send("HttpRequest receive set stream 1.");
-                _response.SetStream(bodyBuffer); // Use bodyBuffer for the response content
-                Cosmos.HAL.Global.debugger.Send("HttpRequest receive set stream 1.1");
-            }
-            else
-            {
-                Cosmos.HAL.Global.debugger.Send("HttpRequest receive set stream 2.");
-                _response.SetStream(bodyBuffer); // Use bodyBuffer for the response content
-                Cosmos.HAL.Global.debugger.Send("HttpRequest receive set stream 2.1");
-            }
-
-            Cosmos.HAL.Global.debugger.Send("HttpRequest receive close.");
+            _response.SetStream(bodyBuffer);
 
             this.closeTcp();
-
 
             Cosmos.HAL.Global.debugger.Send("HttpRequest receive done.");
         }
