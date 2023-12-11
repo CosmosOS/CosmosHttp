@@ -12,22 +12,13 @@
 
 ## Usage
 
-Install the Nuget Package from [Nuget](https://www.nuget.org/packages/CosmosHttpClient/) or [Github](https://github.com/CosmosOS/CosmosHttpClient/packages/):
-
-```PM
-Install-Package CosmosHttpClient -Version 1.0.0
-```
-
-```PM
-dotnet add PROJECT package CosmosHttpClient --version 1.0.0
-```
-
-Or add these lines to your Cosmos kernel .csproj:
-
-```
-<ItemGroup>
-    <PackageReference Include="CosmosHttpClient" Version="1.0.0" NoWarn="NU1604;NU1605" />
-</ItemGroup>
+```CS
+HttpRequest request = new();
+request.IP = "34.223.124.45";
+request.Path = "/";
+request.Method = "GET";
+request.Send();
+Console.WriteLine(request.Response.Content);
 ```
 
 You can find more information about the HTTP client and how to connect to a remote server in the [Cosmos Documentation](https://cosmosos.github.io/articles/Kernel/Network.html#http).
