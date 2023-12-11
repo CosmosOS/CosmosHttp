@@ -18,6 +18,8 @@
 
 ## Usage
 
+### Installation
+
 Install the Nuget Package from [Nuget](https://www.nuget.org/packages/CosmosHttp/):
 
 ```PM
@@ -35,6 +37,8 @@ Or add these lines to your Cosmos kernel .csproj:
     <PackageReference Include="CosmosHttp" Version="1.0.2" />
 </ItemGroup>
 ```
+
+### Examples
 
 ```CS
 using CosmosHttp.Client;
