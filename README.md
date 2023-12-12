@@ -20,18 +20,18 @@ See [this issue](https://github.com/CosmosOS/CosmosHttp/issues/1) for todo list.
 Install the Nuget Package from [Nuget](https://www.nuget.org/packages/CosmosHttp/):
 
 ```PM
-Install-Package CosmosHttp -Version 1.0.2
+Install-Package CosmosHttp -Version 1.0.3
 ```
 
 ```PM
-dotnet add PROJECT package CosmosHttp --version 1.0.2
+dotnet add PROJECT package CosmosHttp --version 1.0.3
 ```
 
 Or add these lines to your Cosmos kernel .csproj:
 
 ```
 <ItemGroup>
-    <PackageReference Include="CosmosHttp" Version="1.0.2" />
+    <PackageReference Include="CosmosHttp" Version="1.0.3" />
 </ItemGroup>
 ```
 
