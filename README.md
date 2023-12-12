@@ -11,10 +11,7 @@
 > CosmosHTTP is a HTTP client made in C# for the Cosmos operating system construction kit. GET and PUT are currently supported.
 
 ### Todo
-- Implement HTTPS
-- Implement GZIP
-- Implement Deflate
-- Implement HTTP chunks
+See [this issue](https://github.com/CosmosOS/CosmosHttp/issues/1) for todo list.
 
 ## Usage
 
