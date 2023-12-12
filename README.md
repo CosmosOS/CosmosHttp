@@ -54,9 +54,11 @@ Here is a basic wget command implementation using CosmosHttp: [github.com/aura-s
 
 👤 **[@valentinbreiz](https://github.com/valentinbreiz)**
 
+👤 **[@2881099](https://github.com/2881099)**
+
 ## 🤝 Contributing
 
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/CosmosOS/CosmosHttp/issues). 
+Contributions, issues and feature requests are welcome! Feel free to check [issues page](https://github.com/CosmosOS/CosmosHttp/issues). 
 
 ## Show your support
 
@@ -64,5 +66,4 @@ Give a ⭐️ if this project helped you!
 
 ## 📝 License
 
-Copyright © 2022 [CosmosOS](https://github.com/CosmosOS).<br />
-This project is [BSD Clause 3](https://github.com/CosmosOS/CosmosHttp/blob/main/LICENSE.txt) licensed.
+Copyright © 2023 [CosmosOS](https://github.com/CosmosOS). This project is [BSD Clause 3](https://github.com/CosmosOS/CosmosHttp/blob/main/LICENSE.txt) licensed.
