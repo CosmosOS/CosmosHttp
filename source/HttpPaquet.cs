@@ -11,6 +11,7 @@ namespace CosmosHttp
 {
     public class HttpPaquet : IDisposable
     {
+        internal string _domain;
         internal string _ip;
         internal string _method = "GET";
         internal string _charset = "us-ascii";
@@ -31,6 +32,18 @@ namespace CosmosHttp
             set
             {
                 _method = value.ToUpper();
+            }
+        }
+
+        public string Domain
+        {
+            get
+            {
+                return _domain;
+            }
+            set
+            {
+                _domain = value;
             }
         }
 

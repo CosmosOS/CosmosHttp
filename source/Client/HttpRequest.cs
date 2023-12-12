@@ -96,7 +96,7 @@ namespace CosmosHttp.Client
                 }
                 data += "\r\n\r\n";
             }
-            _headers["Host"] = _ip;
+            _headers["Host"] = _domain;
 
             string http = _method + " " + _path + " HTTP/1.1\r\n";
             foreach (string head in _headers.Keys)

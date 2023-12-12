@@ -42,6 +42,7 @@ using CosmosHttp.Client;
 
 HttpRequest request = new();
 request.IP = "34.223.124.45";
+request.Domain = "neverssl.com"; //very useful for subdomains on same IP
 request.Path = "/";
 request.Method = "GET";
 request.Send();
