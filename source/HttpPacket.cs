@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace CosmosHttp
 {
-    public class HttpPaquet : IDisposable
+    public class HttpPacket : IDisposable
     {
         internal string _domain;
         internal string _ip;
@@ -17,10 +17,11 @@ namespace CosmosHttp
         internal string _charset = "us-ascii";
         internal string _data;
         internal string _head;
-        internal Dictionary<string, string> _headers = new Dictionary<string, string>();
+        internal Dictionary<string, string> _headers;
 
-        public HttpPaquet()
+        public HttpPacket()
         {
+            _headers = new Dictionary<string, string>();
         }
 
         public string Method

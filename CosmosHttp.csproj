@@ -6,7 +6,7 @@
     <Authors>Cosmos</Authors>
     <Company>Cosmos</Company>
     <Description>HTTP Client for CosmosOS.</Description>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -25,6 +25,7 @@
 
   <ItemGroup>
 	  <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604" />
+	  <PackageReference Include="Zlib.Portable" Version="1.11.0" />
   </ItemGroup>
 
   <ItemGroup>

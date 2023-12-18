@@ -20,18 +20,18 @@ See [this issue](https://github.com/CosmosOS/CosmosHttp/issues/1) for todo list.
 Install the Nuget Package from [Nuget](https://www.nuget.org/packages/CosmosHttp/):
 
 ```PM
-Install-Package CosmosHttp -Version 1.0.3
+Install-Package CosmosHttp -Version 1.0.4
 ```
 
 ```PM
-dotnet add PROJECT package CosmosHttp --version 1.0.3
+dotnet add PROJECT package CosmosHttp --version 1.0.4
 ```
 
 Or add these lines to your Cosmos kernel .csproj:
 
 ```
 <ItemGroup>
-    <PackageReference Include="CosmosHttp" Version="1.0.3" />
+    <PackageReference Include="CosmosHttp" Version="1.0.4" />
 </ItemGroup>
 ```
 
@@ -46,7 +46,7 @@ request.Domain = "neverssl.com"; //very useful for subdomains on same IP
 request.Path = "/";
 request.Method = "GET";
 request.Send();
-Console.WriteLine(request.Response.Content);
+Console.WriteLine(request.Response.Content); // or to get bytes Encoding.ASCII.getString(request.Response.GetStream())
 ```
 
 Here is a basic wget command implementation using CosmosHttp: [github.com/aura-systems/Aura-Operating-System](https://github.com/aura-systems/Aura-Operating-System/blob/master/SRC/Aura_OS/System/Interpreter/Commands/Network/Wget.cs#L63).

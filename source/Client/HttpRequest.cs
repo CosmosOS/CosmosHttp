@@ -13,7 +13,7 @@ using System.Text;
 
 namespace CosmosHttp.Client
 {
-    public class HttpRequest : HttpPaquet
+    public class HttpRequest : HttpPacket
     {
         private TcpClient _client;
         private string _remote;
@@ -45,7 +45,7 @@ namespace CosmosHttp.Client
             _headers.Add("Accept", "*/*");
             _headers.Add("User-Agent", "CosmosHttp Client (CosmosOS)");
             _headers.Add("Accept-Language", "en-us");
-            _headers.Add("Accept-Encoding", "identity");
+            _headers.Add("Accept-Encoding", "gzip, deflate");
         }
 
         public void Close()

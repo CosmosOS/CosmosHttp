@@ -10,7 +10,7 @@ using System.Text;
 
 namespace CosmosHttp.Client
 {
-    public class HttpResponse : HttpPaquet
+    public class HttpResponse : HttpPacket
     {
         private int _received = 0;
         private HttpStatusCode _statusCode;
@@ -136,6 +136,19 @@ namespace CosmosHttp.Client
         {
             _stream = bodyBytes;
             _contentLength = bodyBytes.Length;
+        }
+
+        public byte[] GetStream()
+        {
+            switch (_contentEncoding.ToLower())
+            {
+                case "gzip":
+                    return GZip.Decompress(_stream);
+                case "deflate":
+                    return Deflate.Decompress(_stream);
+                default:
+                    return _stream;
+            }
         }
     }
 }
